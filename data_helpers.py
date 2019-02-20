@@ -8,18 +8,38 @@ def clean_str(string):
     Original taken from https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
     """
     string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
-    string = re.sub(r"\'s", " \'s", string)
-    string = re.sub(r"\'ve", " \'ve", string)
-    string = re.sub(r"n\'t", " n\'t", string)
-    string = re.sub(r"\'re", " \'re", string)
-    string = re.sub(r"\'d", " \'d", string)
-    string = re.sub(r"\'ll", " \'ll", string)
+    string = re.sub(r"\'s", "\'s", string)
+    string = re.sub(r"\'ve", "\'ve", string)
+    string = re.sub(r"n\'t", "n\'t", string)
+    string = re.sub(r"\'re", "\'re", string)
+    string = re.sub(r"\'d", "\'d", string)
+    string = re.sub(r"\'ll", "\'ll", string)
     string = re.sub(r",", " , ", string)
     string = re.sub(r"!", " ! ", string)
     string = re.sub(r"\(", " \( ", string)
     string = re.sub(r"\)", " \) ", string)
     string = re.sub(r"\?", " \? ", string)
     string = re.sub(r"\s{2,}", " ", string)
+    string = re.sub(r"can\'t", "can not", string)
+    string = re.sub(r"won\'t", "will not", string)
+    string = re.sub(r"shouldn\'t", "should not",string)
+    string = re.sub(r"mustn\'t", "must not", string)
+    string = re.sub(r"isn\'t", "is not", string)
+    string = re.sub(r"aren\'t", "are not", string)
+    string = re.sub(r"wasn\'t", "was not", string)
+    string = re.sub(r"weren\'t", "were not", string)
+    string = re.sub(r"hasn\'t", "has not", string)
+    string = re.sub(r"haven\'t", "have not", string)
+    string = re.sub(r"hadn\'t", "had not", string)
+    string = re.sub(r"he\'s", "he is", string)
+    string = re.sub(r"she\'s", "she is", string)
+    string = re.sub(r"you\'re", "you are", string)
+    string = re.sub(r"we\'re", "we are", string)
+    string = re.sub(r"i\'m", "i am", string)
+    string = re.sub(r"i\'ll", "i will", string)
+    string = re.sub(r"she\'ll", "she will", string)
+    string = re.sub(r"he\'ll", "he will", string)
+    string = re.sub(r"you'll", "you will", string)
     return string.strip().lower()
 
 
@@ -61,3 +81,5 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
             start_index = batch_num * batch_size
             end_index = min((batch_num + 1) * batch_size, data_size)
             yield shuffled_data[start_index:end_index]
+
+

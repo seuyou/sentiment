@@ -53,5 +53,14 @@ def Inspection(word):
     print("Inserting {}".format(word))
 
 
+
+def Change_format(row):
+
+    list_row = list(row)
+
+    return list(map(float, list_row[0].split(" ")))
+
+
+
         
   
