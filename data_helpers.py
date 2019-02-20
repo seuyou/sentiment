@@ -1,6 +1,10 @@
 import numpy as np
 import re
+<<<<<<< HEAD
 import numpy as np
+=======
+
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
 
 def clean_str(string):
     """
@@ -83,6 +87,7 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
             yield shuffled_data[start_index:end_index]
 
 
+<<<<<<< HEAD
 def tokenization(string):
 
     string = string.strip(" ")
@@ -113,3 +118,5 @@ def load_data_and_labels_csv(mixed_data_file):
 
 
 
+=======
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
