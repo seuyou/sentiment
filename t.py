@@ -3,6 +3,7 @@ def iterate_append(test_list):
     try:
         for i, item in enumerate(test_list):
 <<<<<<< HEAD
+<<<<<<< HEAD
             b.append(item)
     except Exception:
         b.append(0)
@@ -21,6 +22,8 @@ except Exception:
 print(b)
 
 =======
+=======
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
             print(2/item)
     except Exception:
         print("{} by zero".format(i))
@@ -34,4 +37,7 @@ except Exception:
     print("{} by zero".format(item))
     iterate_append(a[i+1:])
 
+<<<<<<< HEAD
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
+=======
 >>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c

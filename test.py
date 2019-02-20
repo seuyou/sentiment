@@ -35,7 +35,11 @@ sentence = np.array(sentence)
 print("The shape of the list is {}".format(np.shape(sentence)))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 """
+=======
+
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
 =======
 
 >>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
@@ -52,6 +56,7 @@ df = pd.read_csv(os.path.join(address, "training.csv"), encoding="latin-1")
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def enumerate_append(remaining_list):
 
     try:
@@ -62,12 +67,18 @@ def enumerate_append(remaining_list):
 
 =======
 >>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
+=======
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
 test_string = clean_str(df.iloc[0, 5])
 string_list = test_string.split(" ")
 sentence = []
 start_time = time.time()
 <<<<<<< HEAD
+<<<<<<< HEAD
 for i, word  in enumerate(string_list):
+=======
+for x in string_list:
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
 =======
 for x in string_list:
 >>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
@@ -76,6 +87,7 @@ for x in string_list:
     except Exception:
         sentence.append(np.zeros((1,300),type=float))
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -83,6 +95,9 @@ for x in string_list:
 ################################################################
 
 
+=======
+"""
+>>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
 =======
 """
 >>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
