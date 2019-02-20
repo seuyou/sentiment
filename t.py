@@ -2,16 +2,20 @@ def iterate_append(test_list):
 
     try:
         for i, item in enumerate(test_list):
-            print(2/item)
+            b.append(item)
     except Exception:
-        print("{} by zero".format(i))
+        b.append(0)
         iterate_append(a[i+1:])
 
 a = [1,2,0,3,4]
+b = []
 try:
     for i, item in enumerate(a):
-        print(2/item)
+        b.append(2/item)
+
 except Exception:
-    print("{} by zero".format(item))
+    b.append(0)
     iterate_append(a[i+1:])
+
+print(b)
 

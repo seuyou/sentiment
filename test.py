@@ -34,7 +34,7 @@ for x in string_list:
 sentence = np.array(sentence)
 print("The shape of the list is {}".format(np.shape(sentence)))
 
-
+"""
 from sql_import import Loading_to_memory
 from data_helpers import clean_str
 import numpy as np
@@ -47,16 +47,30 @@ df = pd.read_csv(os.path.join(address, "training.csv"), encoding="latin-1")
 
 
 
+def enumerate_append(remaining_list):
+
+    try:
+        for i, word in enumerate(remaining_list):
+            
+
+
+
 test_string = clean_str(df.iloc[0, 5])
 string_list = test_string.split(" ")
 sentence = []
 start_time = time.time()
-for x in string_list:
+for i, word  in enumerate(string_list):
     try:
         sentence.append(en_model[x])
     except Exception:
         sentence.append(np.zeros((1,300),type=float))
-"""
+
+
+
+
+################################################################
+
+
 a = [1,2,0,3,4]
 try:
     for i, item in enumerate(a):

@@ -1,6 +1,6 @@
 import numpy as np
 import re
-
+import numpy as np
 
 def clean_str(string):
     """
@@ -81,5 +81,35 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
             start_index = batch_num * batch_size
             end_index = min((batch_num + 1) * batch_size, data_size)
             yield shuffled_data[start_index:end_index]
+
+
+def tokenization(string):
+
+    string = string.strip(" ")
+    clean_string = clean_str(string)
+    return clean_strings.split(" ")
+
+
+def load_data_and_labels_csv(mixed_data_file):
+
+    "Loading the mixed polarizd data from csv file, split the data into data and labels"
+
+    df = df.read_csv(mixed_data_file, encoding="latin-1")
+    input_x = [tokenization(df.iloc[i,5]) for i in range(df.shape[0]) ]
+    input_y = []
+    for i in range(df.shape[0]):
+    # Change integer to list
+        if df.iloc[i, 0]==0:
+            input_y.append([1., 0., 0.])
+        elif df.iloc[i, 0]==2:
+            input_y.append([0., 1., 0.])
+        else:
+            input_y.append([0., 0., 1.])
+    return [input_x, input_y]
+
+
+
+    
+
 
 
