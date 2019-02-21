@@ -1,6 +1,6 @@
 import numpy as np
 import re
-import numpy as np
+import pandas as pd
 
 def clean_str(string):
     """
@@ -85,7 +85,7 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
 
 def tokenization(string):
 
-    string = string.strip(" ")
+    string = string.strip(" ").lower()
     clean_string = clean_str(string)
     return clean_string.split(" ")
 
@@ -94,7 +94,7 @@ def load_data_and_labels_csv(mixed_data_file):
 
     "Loading the mixed polarizd data from csv file, split the data into data and labels"
 
-    df = df.read_csv(mixed_data_file, encoding="latin-1")
+    df = pd.read_csv(mixed_data_file, encoding="latin-1")
     input_x = [tokenization(df.iloc[i,5]) for i in range(df.shape[0]) ]
     input_y = []
     for i in range(df.shape[0]):
@@ -106,6 +106,30 @@ def load_data_and_labels_csv(mixed_data_file):
         else:
             input_y.append([0., 0., 1.])
     return [input_x, input_y]
+
+
+def enumerate_append(remaining_list, sentence_vector, en_model):
+
+    for i, word in enumerate(remaining_list):
+        try: 
+            sentence_vector.append[en_model[word]]
+        except Exception:
+            sentence_vector.append[np.zeros((1,300))]
+            enumerate_append(remaining_list[i+1:], sentence_vector, en_model)
+
+
+def change_to_vector(en_model, sentence_list, max_len):
+
+    sentence_vector = []
+    enumerate_append(sentence_list, sentence_vector, en_model)
+    sentence_vector = np.array(sentence_vector)
+    diff_len = max_len - np.shape(sentence_vector)[0]
+    sentence_vector = np.concatenate([sentence_vector,np.zeros((diff_len, 300))], 0)
+    return sentence_vector
+
+
+    
+
 
 
 

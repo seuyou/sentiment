@@ -1,43 +1,9 @@
-def iterate_append(test_list):
-
-    try:
-        for i, item in enumerate(test_list):
-<<<<<<< HEAD
-<<<<<<< HEAD
-            b.append(item)
-    except Exception:
-        b.append(0)
-        iterate_append(a[i+1:])
-
-a = [1,2,0,3,4]
-b = []
-try:
-    for i, item in enumerate(a):
-        b.append(2/item)
-
-except Exception:
-    b.append(0)
-    iterate_append(a[i+1:])
-
-print(b)
-
-=======
-=======
->>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
-            print(2/item)
-    except Exception:
-        print("{} by zero".format(i))
-        iterate_append(a[i+1:])
-
-a = [1,2,0,3,4]
-try:
-    for i, item in enumerate(a):
-        print(2/item)
-except Exception:
-    print("{} by zero".format(item))
-    iterate_append(a[i+1:])
-
-<<<<<<< HEAD
->>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
-=======
->>>>>>> 4b5592f1f54e4882ed2d8e819ccb7d83623b391c
+import pandas as np
+from data_helpers import load_data_and_labels_csv
+import numpy as np
+csv_address = r"C:\Users\t-yual\Desktop\dataset\training.csv"
+input_x, input_y = load_data_and_labels_csv(csv_address)
+input_x = np.array(input_x)
+input_y = np.array(input_y)
+print("The shape of input_x: {}".format(np.shape(input_x)))
+print("The shape of input_y: {}".format(np.shape(input_y)))
