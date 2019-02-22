@@ -2,7 +2,7 @@ import tensorflow as tf
 
 def SentimentCNN(object):
 
-    def __init__(self, max_len, filter_size, num_filters, embedding_size=300, loss_weight, l2_reg_lambda=0.0):
+    def __init__(self, max_len, filter_size, num_filters, loss_weight, l2_reg_lambda=0.0, embedding_size=300):
 
         self.input_x = tf.placeholder(tf.float32, [None, max_len, embedding_size], name="input_x")
         self.input_y = tf.placeholder(tf.float32, [None, 1], name="input_y")
@@ -59,7 +59,7 @@ def SentimentCNN(object):
         with tf.name_scope("loss"):
             
             self.loss = tf.losses.mean_squared_error(self.input_y, self.score, weights=loss_weight)
-            
+
 
 
 
