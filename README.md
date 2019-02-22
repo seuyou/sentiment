@@ -2,11 +2,14 @@
 
 It is slightly simplified implementation of Kim's [Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1408.5882) paper in Tensorflow.
 
+>This repository is based on the [repository](https://github.com/dennybritz/cnn-text-classification-tf)
+
 ## Requirements
 
 - Python 3
 - Tensorflow > 0.12
 - Numpy
+- pandas
 
 ## Training
 
