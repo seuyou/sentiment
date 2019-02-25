@@ -10,6 +10,10 @@ def SentimentCNN(object):
 
         l2_loss = tf.constant(0.0)
 
+
+        with tf.name_scope("expand_dims"):
+            input_x_expanded = tf.expand_dims(self.input_x, -1)
+
         with tf.device('/gpu:0'), tf.name_scope("Convolution"):
 
             W = tf.get_variable("Kernel", 
@@ -20,7 +24,7 @@ def SentimentCNN(object):
                                 [num_filters], 
                                 dtype=tf.float32,
                                 initializer=tf.constant_initializer([0.1]))
-            cnn = tf.nn.conv2d(self.input_x, 
+            cnn = tf.nn.conv2d(input_x_expanded, 
                                W,
                                strides=[1, 1, 1, 1],
                                padding="VALID")

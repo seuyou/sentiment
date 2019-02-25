@@ -2,7 +2,7 @@ from gensim.models import keyedvectors
 import pandas as pd 
 import time
 
-address = "C:\Users\t-yual\Desktop\dataset\wiki.en.vec"
+address = r"C:\Users\t-yual\Desktop\dataset\wiki.en.vec"
 def Loading_to_memory(file_address):
     
     print("Loading begins...")
