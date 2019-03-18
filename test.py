@@ -1,53 +1,68 @@
-import re
-import pandas as pd
+from first_layer_datahelper import training_data_pay
+import tensorflow as tf
+import numpy as np
+from data_helpers import batch_iter
+class Extract_senti(object):
 
-def extract_words(string):
+    def __init__(self, max_len, output_dim, embedding_size=300):
 
-    string = re.sub(r"[#][0-9]", " ", string)
-    string = re.sub(r"\s{2,}", " ", string)
-    return string.strip().lower()
-
-
-address = r"C:\Users\liuyuan\Desktop\sentiment\dataset\SentiWordNet.txt"
-lines = open(address, "r").readlines()
-clean_lines = [lines[i] for i, x in enumerate(lines) if "#" not in x[0]]
-clean_list = [string.split("\t") for string in clean_lines]
-print(clean_list[108])
-
-
-
-data = []
-index = []
-
-for i, line in enumerate(clean_list):
-    for word in extract_words(line[4]).split(" "):
-        try:
-            if not re.search(r"[0-9]", word):
-                if not re.search(r"_", word) and not re.search(r"-", word):
-                    data.append([word, float(clean_list[i][2])-float(clean_list[i][3])])
-                else:
-                    continue
-            else:
-                continue
-        except Exception:
-            print("exception")
-            print("The line is {}".format(i))
+        self.input_x = tf.placeholder(dtype=tf.float32, shape=[None, max_len, embedding_size], name="input_x")
+        self.input_y = tf.placeholder(dtype=tf.float32, shape=[None, max_len], name="input_y")
         
-index = list(range(len(data)))
-columns = ["word", "score"]
 
-df = pd.DataFrame(data ,index=index, columns=columns)
-filename = r"C:\Users\liuyuan\Desktop\sentiment\dataset\WordSentiScore.csv"
-df.to_csv(filename, encoding="utf-8")
-print("Successful")
+        self.W = tf.get_variable("transformation_matrix", [embedding_size, output_dim], dtype=tf.float32, initializer=tf.random_uniform_initializer(minval=-1., maxval=1.))
+        
 
 
+        with tf.name_scope("linear_mapping"):
 
+                input_x_reshape = tf.reshape(self.input_x, (-1, embedding_size))
+                mapping = tf.reshape(tf.matmul(input_x_reshape, self.W), (-1, max_len, output_dim))
+                mapping_expanded = tf.expand_dims(mapping, -1)
+
+        with tf.name_scope("maxpool"):
+
+                pool = tf.nn.max_pool(mapping_expanded,
+                                      ksize=[1, 1, output_dim, 1],
+                                      strides=[1, 1, 1, 1],
+                                      padding="VALID",
+                                      name="pool"
+                        )
+                self.pool_reshape = tf.reshape(pool, (-1, max_len))
+
+
+        with tf.name_scope("loss"):
+
+                self.record = tf.sigmoid(self.pool_reshape)
+                self.loss = tf.losses.mean_squared_error(self.input_y, self.record)
+
+
+
+def main(argv=None):
+    max_len = 10
     
-     
-        
+    vector_file = "/seu_share/home/txli/YuanLiu/dataset/wiki-news.vec"
+    file_csv = "/seu_share/home/txli/YuanLiu/dataset/words_scores.csv"
+    train_x, train_y, dev_x, dev_y = training_data_pay(file_csv, vector_file, max_len, False)
+    print("shape of train_x:{}".format(np.shape(train_x)))
+    batches = batch_iter(train_x, train_y, 30, 200)
+    cnn = Extract_senti(max_len, 300)
+    for batch in batches:
+        train_x_test, train_y_test = batch
+        for i in range(10):
+            train_x_test_c = np.reshape(train_x_test[i], (1, max_len, 300))
+            train_y_test_c = np.reshape(train_y_test[i], (1, max_len))           
+            sess = tf.Session()
+            init = tf.global_variables_initializer()
+            sess.run(init)
+            pool, loss = sess.run([cnn.pool_reshape, cnn.loss], feed_dict={cnn.input_x:train_x_test_c, cnn.input_y:train_y_test_c} )
+            print(pool)
+            print(train_y_test)
+            print(loss)
+        break
 
-            
+if __name__ == "__main__":
+    tf.app.run()
 
 
 

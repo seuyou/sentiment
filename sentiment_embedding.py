@@ -36,7 +36,7 @@ def SentimentCNN(object):
                                     strides=[1, 1, 1, 1],
                                     padding="VALID")
             
-            num_filters_total = (max_len-filter_size+1)*num_filters
+            num_filters_total = (max_len-filter_size+1) * num_filters
             self.h_pool_flat = tf.reshape(pooled, shape=[-1, num_filters_total])
         
         with tf.name_scope("drop_out"):

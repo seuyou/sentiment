@@ -1,6 +1,9 @@
 import numpy as np
 import re
 import pandas as pd
+import time
+from gensim.models import KeyedVectors
+import sys
 
 def clean_str(string):
     """
@@ -16,30 +19,18 @@ def clean_str(string):
     string = re.sub(r"\'ll", "\'ll", string)
     string = re.sub(r",", " , ", string)
     string = re.sub(r"!", " ! ", string)
-    string = re.sub(r"\(", " \( ", string)
-    string = re.sub(r"\)", " \) ", string)
-    string = re.sub(r"\?", " \? ", string)
-    string = re.sub(r"\s{2,}", " ", string)
-    string = re.sub(r"can\'t", "can not", string)
+    string = re.sub(r"\(", " ( ", string)
+    string = re.sub(r"\)", " ) ", string)
+    string = re.sub(r"\?", " ? ", string)
     string = re.sub(r"won\'t", "will not", string)
-    string = re.sub(r"shouldn\'t", "should not",string)
-    string = re.sub(r"mustn\'t", "must not", string)
-    string = re.sub(r"isn\'t", "is not", string)
-    string = re.sub(r"aren\'t", "are not", string)
-    string = re.sub(r"wasn\'t", "was not", string)
-    string = re.sub(r"weren\'t", "were not", string)
-    string = re.sub(r"hasn\'t", "has not", string)
-    string = re.sub(r"haven\'t", "have not", string)
-    string = re.sub(r"hadn\'t", "had not", string)
-    string = re.sub(r"he\'s", "he is", string)
-    string = re.sub(r"she\'s", "she is", string)
-    string = re.sub(r"you\'re", "you are", string)
-    string = re.sub(r"we\'re", "we are", string)
-    string = re.sub(r"i\'m", "i am", string)
-    string = re.sub(r"i\'ll", "i will", string)
-    string = re.sub(r"she\'ll", "she will", string)
-    string = re.sub(r"he\'ll", "he will", string)
-    string = re.sub(r"you'll", "you will", string)
+    string = re.sub(r"\'s", " is", string)
+    string = re.sub(r"\'re", " are", string)
+    string = re.sub(r"\'m", " am", string)
+    string = re.sub(r"n\'t", " not", string)
+    string = re.sub(r"\'ll", " will",string)
+    string = re.sub(r"[\"\']", " ", string)
+    string = re.sub(r"\s{2,}", " ", string)
+    
     return string.strip().lower()
 
 
@@ -72,73 +63,113 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     return [x_text, y]
 
 
-def batch_iter(data, batch_size, num_epochs, shuffle=True):
+def batch_iter(data_x, data_y, batch_size, num_epochs, shuffle=True):
     """
     Generates a batch iterator for a dataset.
+    Before processing by this function, you data_x should be of the same length for each sentence
     """
-    data = np.array(data)
-    data_size = len(data)
-    num_batches_per_epoch = int((len(data)-1)/batch_size) + 1
+    
+    data_x = np.array(data_x)
+    data_y = np.array(data_y)
+    data_size = len(data_x)
+    num_batches_per_epoch = int((len(data_x)-1)/batch_size) + 1
     for epoch in range(num_epochs):
         # Shuffle the data at each epoch
         if shuffle:
             shuffle_indices = np.random.permutation(np.arange(data_size))
-            shuffled_data = data[shuffle_indices]
+            shuffled_data_x, shuffled_data_y = data_x[shuffle_indices], data_y[shuffle_indices]
         else:
-            shuffled_data = data
+            shuffled_data_x, shuffled_data_y = data_x, data_y
         for batch_num in range(num_batches_per_epoch):
             start_index = batch_num * batch_size
             end_index = min((batch_num + 1) * batch_size, data_size)
-            yield shuffled_data[start_index:end_index]
+            yield [shuffled_data_x[start_index:end_index], shuffled_data_y[start_index:end_index]]
 
 
-def tokenization(string):
 
-    string = string.strip(" ").lower()
-    clean_string = clean_str(string)
-    return clean_string.split(" ")
-
-
-def load_data_and_labels_csv(mixed_data_file):
-
-    "Loading the mixed polarizd data from csv file, split the data into data and labels"
-
-    df = pd.read_csv(mixed_data_file, encoding="latin-1")
-    input_x = [tokenization(df.iloc[i,5]) for i in range(df.shape[0]) ]
-    input_y = []
-    for i in range(df.shape[0]):
-    # Change integer to list
-        if df.iloc[i, 0]==0:
-            input_y.append([1., 0., 0.])
-        elif df.iloc[i, 0]==2:
-            input_y.append([0., 1., 0.])
-        else:
-            input_y.append([0., 0., 1.])
-    return [input_x, input_y]
-
-
-def enumerate_append(remaining_list, sentence_vector, en_model):
-
-    for i, word in enumerate(remaining_list):
-        try: 
-            sentence_vector.append[en_model[word]]
-        except Exception:
-            sentence_vector.append[np.zeros((1,300))]
-            enumerate_append(remaining_list[i+1:], sentence_vector, en_model)
-
-
-def change_to_vector(en_model, sentence_list, max_len):
-
+def enumerate_append(remaining_list, en_model):
+    # Change the text words into vectors that from pre-trained vectors
     sentence_vector = []
-    enumerate_append(sentence_list, sentence_vector, en_model)
-    sentence_vector = np.array(sentence_vector)
-    diff_len = max_len - np.shape(sentence_vector)[0]
-    sentence_vector = np.concatenate([sentence_vector,np.zeros((diff_len, 300))], 0)
+    for word in remaining_list:
+        try: 
+            word_vector = np.array(en_model[word])
+            sentence_vector.append(word_vector)
+        except Exception:
+            sentence_vector.append(np.zeros((300, )))
+    return sentence_vector
+          
+
+
+def debug_enumerate_append(remaining_list):
+    # Change the text words into vectors for debug purpose
+    sentence_vector = []
+    for word in remaining_list:
+        sentence_vector.append(np.zeros(300, ))
+    
     return sentence_vector
 
 
+
+def format_to_same_length(training_data, maxlen):
+    '''
+        read the sentence_polarity training data from csv file
+        and change the sentences of different lengths into those of the same length
+    '''
+    print("reading training data from:{}, waiting...".format(training_data))
+    df = pd.read_csv(training_data, encoding="latin-1")
+    sentences = []
+    polarities = []
+    for i in range(df.shape[0]):
+        sentences.append(df.iloc[i, 1].split(" "))
+        polarities.append(df.iloc[i, 2])
+    print("Reading successfully")   
+    print("The length of sentences before padding is:{}".format(len(sentences)))
+    for i, sentence in enumerate(sentences):
+        if len(sentence) > 80:
+            sentences[i] = sentence[:80]
+        elif len(sentence) < 80:
+            sentence = sentence + ["0"] * (80 - len(sentence))
+            sentences[i] = sentence
+    return [sentences, polarities]
     
 
+def training_data_pay(input_x, y, word2vec):
+   
+    input_x_vector = text_to_vector(input_x, word2vec)
+    input_y_vector = []
+    for i in range(len(y)):
+        if y[i] == 0:
+            input_y_vector.append([1, 0])
+        else:
+            input_y_vector.append([0, 1])
+  
+    return [input_x_vector, input_y_vector]
+    
+
+def text_to_vector(text, filename):
+    "Before processing by this function, the sentences the text contains should have the same length"
+    "Change the data from text words to pretrained word vectors"
+    try:
+        print("Loading word2vec from:{}".format(filename))
+        en_model = KeyedVectors.load_word2vec_format(filename)
+        print("Loading successfully!")
+    except Exception:
+        print("Loading failed!")
+        sys.exit()
+    vector = []
+    for batch in text:
+        vector.append(enumerate_append(batch, en_model))
+    return vector
+
+
+    
+def debug_text_to_vector(text):
+
+    vector = []
+    for batch in text:
+        vector.append(debug_enumerate_append(batch))
+
+    return vector
 
 
 
