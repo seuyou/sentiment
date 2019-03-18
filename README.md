@@ -15,3 +15,14 @@ Here we should the evaluation losses and accuracies with the one-hot embedding a
 ## one-hot accuracy
 
 ![](one_hot_dev_accuracy.png)
+
+## one-hot loss
+![](one_hot_dev_loss.png)
+
+## word2vec embedding accuracy
+![](embedding_dev_accuracy.png)
+
+## word2vec embedding loss
+![](embedding_dev_loss.png)
+
+from above four images, we can see, when we use word2vec, we achieve high accuray and a high convergence rate. 
