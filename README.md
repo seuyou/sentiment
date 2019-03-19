@@ -10,7 +10,7 @@ What's more, you can find the paper [here](http://arxiv.org/abs/1408.5882), whic
 
 Using different ways to encode words in our training data would get distinctive result, just as proposed by [Zhang](https://arxiv.org/abs/1510.03820)
 
-Here we should the evaluation losses and accuracies with the one-hot embedding and word2vec embedding
+Here we show the evaluation losses and accuracies with the one-hot embedding and word2vec embedding
 
 ## one-hot accuracy
 
