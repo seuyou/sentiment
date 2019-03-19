@@ -14,15 +14,15 @@ Here we show the evaluation losses and accuracies with the one-hot embedding and
 
 ## one-hot accuracy
 
-![](one_hot_dev_accuracy.png)
+![](https://github.com/seuyou/sentiment/blob/master/image/embedding_dev_accuracy.png)
 
 ## one-hot loss
-![](one_hot_dev_loss.png)
+![](https://github.com/seuyou/sentiment/blob/master/image/embedding_dev_loss.png)
 
 ## word2vec embedding accuracy
-![](embedding_dev_accuracy.png)
+![](https://github.com/seuyou/sentiment/blob/master/image/one_hot_dev_accuracy.png)
 
 ## word2vec embedding loss
-![](embedding_dev_loss.png)
+![](https://github.com/seuyou/sentiment/blob/master/image/one_hot_dev_loss.png)
 
 from above four images, we can see, when we use word2vec, we achieve high accuray and a high convergence rate. 
