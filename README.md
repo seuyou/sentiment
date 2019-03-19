@@ -12,17 +12,17 @@ Using different ways to encode words in our training data would get distinctive 
 
 Here we show the evaluation losses and accuracies with the one-hot embedding and word2vec embedding
 
-## one-hot accuracy
+## word2vec embedding accuracy
 
 ![](https://github.com/seuyou/sentiment/blob/master/image/embedding_dev_accuracy.png)
 
-## one-hot loss
+## word2vec embedding loss
 ![](https://github.com/seuyou/sentiment/blob/master/image/embedding_dev_loss.png)
 
-## word2vec embedding accuracy
+## one-hot embedding accuracy
 ![](https://github.com/seuyou/sentiment/blob/master/image/one_hot_dev_accuracy.png)
 
-## word2vec embedding loss
+## one-hot embedding loss
 ![](https://github.com/seuyou/sentiment/blob/master/image/one_hot_dev_loss.png)
 
 from above four images, we can see, when we use word2vec, we achieve high accuray and a high convergence rate. 
